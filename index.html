@@ -522,7 +522,7 @@ footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
       </div>
     </div>
 
-    <form class="waitlist-form" id="waitlist-form" action="https://formspree.io/f/xnjworez" method="POST">
+    <form class="waitlist-form" id="waitlist-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
       <input type="email" name="email" placeholder="your.email@institution.edu" required>
       <input type="hidden" name="_subject" value="FigCheck waitlist signup">
       <button type="submit">Join waitlist →</button>
@@ -1030,14 +1030,17 @@ function validate(insp, journal, figType) {
   });
 
   if (insp.isVector) {
-    checks.push({ label: 'Vector format detected', status: 'pass',
-      detail: 'DPI and pixel dimensions not applicable', value: '✓ vector' });
+    checks.push({ label: 'Vector container detected', status: 'pass',
+      detail: `${insp.format.toUpperCase()} accepted by ${journal.name}`, value: '✓ vector' });
+    checks.push({ label: 'Embedded raster panels', status: 'warn',
+      detail: 'Per-panel DPI / dimensions / color mode of microscopy panels — Pro',
+      value: 'not checked' });
     checks.push({ label: 'Embedded fonts', status: 'warn',
-      detail: 'Verify all fonts are embedded — Pro feature coming soon',
-      value: 'manual' });
-    checks.push({ label: 'Line weights', status: 'warn',
-      detail: `Verify all lines ≥0.25pt at print size — Pro feature coming soon`,
-      value: 'manual' });
+      detail: 'Verify all fonts are embedded as outlines or in the file — Pro',
+      value: 'not checked' });
+    checks.push({ label: 'Line weights at print size', status: 'warn',
+      detail: `Verify all lines ≥0.25pt when scaled to ${journal.maxWidthMM.full} mm — Pro`,
+      value: 'not checked' });
   } else {
     if (insp.dpi) {
       const dpiOk = insp.dpi >= journal.minDPI.halftone;
@@ -1119,8 +1122,16 @@ function renderResults(insp, journal, checks) {
         <span>${journal.name} · ${insp.name}</span>
       </div>
     </div>
-    <ul class="checks">
   `;
+
+  if (insp.isVector) {
+    html += `<div style="margin-bottom:20px;padding:14px 16px;background:#f5ecd9;border:1px solid var(--gold);font-size:13px;line-height:1.55;">
+      <strong style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:var(--gold);display:block;margin-bottom:6px;">Heads up — vector file</strong>
+      The free checker confirms your ${insp.format.toUpperCase()} is an accepted format and within size limits. It does <em>not</em> open the file to inspect embedded microscopy panels, font embedding, or line weights at print size. Per-panel raster analysis is the main Pro feature — <a href="#waitlist" style="color:var(--accent);">join the waitlist</a> to be notified when it ships.
+    </div>`;
+  }
+
+  html += `<ul class="checks">`;
   for (const c of checks) {
     const m = c.status === 'pass' ? '✓' : (c.status === 'fail' ? '✗' : '!');
     html += `
