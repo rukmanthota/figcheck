@@ -4,6 +4,14 @@ A free tool that checks scientific figures against journal submission requiremen
 
 Built as a single static HTML file. No build step, no backend, no analytics, no tracking. Files never leave the user's browser — all parsing happens client-side.
 
+## A note on how this was built
+
+This project was built with significant AI assistance (Claude, Anthropic) for the frontend design, the TIFF/PNG/JPEG header parsing in JavaScript, and the structure of the journal specifications database. I'm a biologist (PhD candidate at UCSF, immunology and cancer), not a frontend developer — AI assistance was what made it possible to ship something polished in a weekend.
+
+The product decisions are mine: the pain point (figure submission requirements being scattered and inconsistent), the scope (30 journals across general / oncology / immunology / cell bio / clinical), the journal list, the curated specs, the framing of free vs. Pro tier features, and the deliberate choice to keep all file parsing client-side for privacy. The journal specifications themselves are sourced from publisher author guidelines and should be verified against the journal's current submission portal before relying on them — both because publishers change requirements occasionally, and because any database curated by an AI-assisted process can contain errors.
+
+If you find a spec that's wrong, please open an issue.
+
 ## Local preview
 
 Open `index.html` in a browser. That's it. Or run a local server:
