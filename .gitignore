@@ -1,0 +1,21 @@
+# Sensitive files
+*token*
+*credential*
+*secret*
+
+# Word and Office temp files
+~$*
+*.docx
+*.doc
+
+# RStudio
+.Rhistory
+.Rapp.history
+.Rproj.user/
+
+# macOS
+.DS_Store
+
+# Editor temp files
+*.swp
+*~
